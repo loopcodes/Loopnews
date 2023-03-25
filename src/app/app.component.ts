@@ -15,7 +15,7 @@ export class AppComponent implements AfterViewInit,OnInit {
   title = 'LoopNews' + VERSION.major;
   public sources:any = [];
   public articles:any = [];
-  public selectedNewsChannel:string = "Top Trending!";
+  public selectedNewsChannel:string = "Top 10 Trending!";
   @ViewChild(MatSidenav) sideNav!: MatSidenav;
   
   
