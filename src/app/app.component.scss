@@ -1,0 +1,42 @@
+mat-sidenav-container{
+    height: calc(100vh - 65px);
+}
+
+mat-sidenav{
+    width: 280px;
+    border-right: none;
+    text-align: center;
+    background-color: black;
+    color: white;
+}
+
+mat-divider{
+    margin: 20px 0px;
+    background-color: red;
+}
+
+mat-icon{
+    margin-right: 8px;
+}
+
+.avatar{
+    border-radius: 50%;
+    width: 110px;
+    height: 110px;
+    margin: 20px auto;
+}
+
+.menu-button{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 1rem;
+    margin: 10px 0;
+}
+
+.menu-button:hover{
+    background-color: red;
+    transition: 0.4s ease-in-out;
+}
+
