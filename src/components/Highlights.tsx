@@ -77,7 +77,7 @@ const Highlights: React.FC<HighlightsProps> = ({
               opacity-0 translate-y-2 animate-fadeUp
               ${
                 activeTag === tag
-                  ? "bg-red-600 text-white "
+                  ? "bg-red-600 text-white"
                   : "bg-gray-700 text-gray-200 hover:bg-red-600 hover:text-white"
               }
             `}
