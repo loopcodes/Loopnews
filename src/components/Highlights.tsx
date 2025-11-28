@@ -28,9 +28,9 @@ const categoryIcons: Record<string, JSX.Element> = {
 const highlightTags: Record<string, string[]> = {
   business: ["Markets", "Startups", "Economy", "Crypto", "Finance"],
   entertainment: ["Movies", "Music", "Celebrities", "TV Shows", "Awards"],
-  general: ["Breaking News", "World", "Local", "Politics"],
-  health: ["Nutrition", "Mental Health", "Medicine", "Fitness"],
-  science: ["Space", "Research", "Physics", "Discovery", "NASA", "Biology"],
+  general: ["Breaking News", "Wold", "Local", "Politics"],
+  health: ["Nutrition", "Mental Health", "Medicine", "Fitness", "Viruses"],
+  science: ["Space", "Research", "Physics", "Discovery", "WIldlife"],
   sports: ["Football", "Soccer", "NBA", "Tennis", "Formula 1", "Transfers"],
   technology: ["AI", "Gadgets", "Cybersecurity", "Apps", "Gaming"],
 };
