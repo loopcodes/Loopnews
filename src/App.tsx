@@ -3,10 +3,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import News from "./pages/News";
 import type { Article } from "./types/Article";
+import Bookmarks from "./pages/Bookmarks";
 
 const App: React.FC = () => {
   const [articles, setArticles] = useState<Article[]>([]);
- 
 
   return (
     <BrowserRouter>
@@ -93,6 +93,7 @@ const App: React.FC = () => {
             />
           }
         />
+        <Route path="/bookmarks" element={<Bookmarks />} />
       </Routes>
     </BrowserRouter>
   );
