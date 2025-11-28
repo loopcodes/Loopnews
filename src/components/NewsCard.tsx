@@ -82,18 +82,18 @@ const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
         </div>
 
         {/* BOTTOM BOOKMARK */}
-        <div className="mt-auto flex items-center justify-end">
+        <div className="mt-auto flex items-center gap-2 justify-end">
           <div className="mt-1 text-xs text-red-500 font-bold">
             Source: {source?.name || "Unknown"}
           </div>
           <button
             onClick={handleBookmark}
-            className="text-white text-xl bg-black/40 p-2 rounded-full cursor-pointer hover:bg-black/60 transition"
+            className="text-white text-lg bg-black/40 p-3 rounded-full cursor-pointer hover:bg-black/60 transition"
           >
             {isSaved ? (
-              <FaBookmark className="text-red-500" />
+              <FaBookmark className="text-red-500 w-4 h-4" />
             ) : (
-              <FaRegBookmark />
+              <FaRegBookmark className="w-4 h-4" />
             )}
           </button>
         </div>

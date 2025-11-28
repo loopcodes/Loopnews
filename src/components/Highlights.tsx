@@ -28,7 +28,7 @@ const categoryIcons: Record<string, JSX.Element> = {
 const highlightTags: Record<string, string[]> = {
   business: ["Markets", "Startups", "Economy", "Crypto", "Finance"],
   entertainment: ["Movies", "Music", "Celebrities", "TV Shows", "Awards"],
-  general: ["Breaking News", "Wold", "Local", "Politics"],
+  general: ["Breaking News", "World", "Local", "Politics"],
   health: ["Nutrition", "Mental Health", "Medicine", "Fitness", "Viruses"],
   science: ["Space", "Research", "Physics", "Discovery", "WIldlife"],
   sports: ["Football", "Soccer", "NBA", "Tennis", "Formula 1", "Transfers"],
@@ -45,20 +45,6 @@ const Highlights: React.FC<HighlightsProps> = ({
 
   return (
     <div className="w-full mb-2 opacity-0 translate-y-3 animate-fadeUp">
-      <style>
-        {`
-        @keyframes fadeUp {
-          0% { opacity: 0; transform: translateY(10px); }
-          100% { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fadeUp {
-          animation: fadeUp .4s ease-out forwards;
-        }
-
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { scrollbar-width: none; }
-        `}
-      </style>
 
       <div className="flex items-center gap-2">
         <span className="text-red-500 text-xl">{Icon}</span>
