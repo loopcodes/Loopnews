@@ -46,15 +46,13 @@ const Navbar: React.FC<NavbarProps> = ({ setArticles }) => {
       if (!query) return;
 
       try {
-        sessionStorage.setItem("searching", "true");
+        // Call the Netlify function
         const res = await axios.get(
-          `https://newsapi.org/v2/top-headlines?q=${query}&apiKey=${
-            import.meta.env.VITE_API_KEY
-          }`
+          `/.netlify/functions/news?query=${encodeURIComponent(query)}`
         );
         setArticles(res.data.articles);
       } catch (error) {
-        console.error(error);
+        console.error("Navbar search error:", error);
       }
     },
     [setArticles]
@@ -64,30 +62,19 @@ const Navbar: React.FC<NavbarProps> = ({ setArticles }) => {
   useEffect(() => {
     if (debouncedSearch.trim() !== "") {
       fetchSearchResults(debouncedSearch);
+    } else {
+      // Clear articles if input is empty
+      setArticles([]);
     }
-  }, [debouncedSearch, fetchSearchResults]);
+  }, [debouncedSearch, fetchSearchResults, setArticles]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    setSearch(value);
-
-    if (value.trim() === "") {
-      // Mark as not searching
-      sessionStorage.setItem("searching", "false");
-
-      // Immediately clear results so old search doesn't show
-      setArticles([]);
-
-      return;
-    }
-
-    // If typing, set searching = true
-    sessionStorage.setItem("searching", "true");
+    setSearch(e.target.value);
   };
 
   const handleTrendingClick = (term: string) => {
     setSearch(term);
-    sessionStorage.setItem("searching", "true");
+    setDebouncedSearch(term);
   };
 
   return (
@@ -109,7 +96,7 @@ const Navbar: React.FC<NavbarProps> = ({ setArticles }) => {
               className={({ isActive }) =>
                 `transition ${
                   isActive
-                    ? "text-white font-bold border-white border-b-2 "
+                    ? "text-white font-bold border-white border-b-2"
                     : "text-gray-200 hover:text-white hover:border-b-2"
                 }`
               }
@@ -134,25 +121,22 @@ const Navbar: React.FC<NavbarProps> = ({ setArticles }) => {
 
         {/* Search + Mobile Button */}
         <div className="flex items-center justify-center gap-4 relative">
-          {/* Search */}
           <div className="relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-
             <input
               type="text"
               value={search}
               onChange={handleChange}
               onFocus={() => setInputFocused(true)}
               onBlur={() => setTimeout(() => setInputFocused(false), 150)}
-              placeholder="What interest you?"
+              placeholder="What interests you?"
               className="md:pl-10 pl-7 w-30 md:w-64 outline-none rounded-lg p-2 text-white"
             />
 
-            {/* Trending Suggestions — show only when focused AND no input */}
+            {/* Trending Suggestions */}
             {inputFocused && search === "" && (
               <div className="absolute mt-2 w-full bg-white text-black rounded-md shadow-md p-3 z-50">
                 <p className="text-sm font-semibold mb-2">Trending Searches</p>
-
                 <div className="flex flex-wrap gap-2">
                   {trendingSearches.map((term) => (
                     <button
@@ -168,7 +152,6 @@ const Navbar: React.FC<NavbarProps> = ({ setArticles }) => {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
           <button
             onClick={() => setOpen(!open)}
             className="md:hidden text-gray-200"

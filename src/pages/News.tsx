@@ -20,84 +20,78 @@ const News: React.FC<NewsProps> = ({ category, articles, setArticles }) => {
   // Active highlight tag
   const [activeHighlight, setActiveHighlight] = useState<string | null>(null);
 
-  // When category changes, reset highlight mode
+  // Reset highlight when category changes
   useEffect(() => {
     setActiveHighlight(null);
   }, [category]);
 
-  /** Fetch category news */
+  /** Fetch category news (top headlines) */
   const fetchCategoryNews = useCallback(async () => {
-    if (activeHighlight) return; // prevent fetch during highlight mode
+    if (activeHighlight) return;
 
     try {
       setLoading(true);
       setPage(1);
 
       const res = await axios.get(
-        `https://newsapi.org/v2/top-headlines?category=${category}&page=1&pageSize=12&apiKey=${
-          import.meta.env.VITE_API_KEY
-        }`
+        `/.netlify/functions/news?category=${category}&page=1`
       );
 
-      setArticles(res.data.articles);
+      setArticles(res.data.articles || []);
     } catch (error) {
-      console.error(error);
+      console.error("Category fetch failed:", error);
     } finally {
       setLoading(false);
     }
   }, [category, setArticles, activeHighlight]);
 
-  /** Load More News (category mode only) */
+  /** Load more news (infinite scroll) */
   const fetchMoreNews = useCallback(async () => {
-    if (loadingMore || activeHighlight) return; // prevent infinite scroll in highlight mode
+    if (loadingMore || activeHighlight) return;
 
     try {
       setLoadingMore(true);
       const nextPage = page + 1;
 
       const res = await axios.get(
-        `https://newsapi.org/v2/top-headlines?category=${category}&page=${nextPage}&pageSize=12&apiKey=${
-          import.meta.env.VITE_API_KEY
-        }`
+        `/.netlify/functions/news?category=${category}&page=${nextPage}`
       );
 
-      if (res.data.articles.length > 0) {
+      if (res.data.articles?.length > 0) {
         setArticles((prev) => [...prev, ...res.data.articles]);
         setPage(nextPage);
       }
     } catch (error) {
-      console.error(error);
+      console.error("Load more failed:", error);
     } finally {
       setLoadingMore(false);
     }
   }, [page, loadingMore, category, setArticles, activeHighlight]);
 
-  /** Fetch Highlight Tag News */
+  /** Fetch news by highlight tag */
   const fetchHighlightNews = async (tag: string) => {
     try {
       setLoading(true);
       setActiveHighlight(tag);
 
       const res = await axios.get(
-        `https://newsapi.org/v2/everything?q=${tag}&pageSize=20&apiKey=${
-          import.meta.env.VITE_API_KEY
-        }`
+        `/.netlify/functions/news?query=${tag}&page=1`
       );
 
-      setArticles(res.data.articles);
+      setArticles(res.data.articles || []);
     } catch (err) {
-      console.error(err);
+      console.error("Highlight fetch failed:", err);
     } finally {
       setLoading(false);
     }
   };
 
-  /** Auto-fetch category news unless a highlight is active */
+  /** Auto-load category on mount or category change */
   useEffect(() => {
     if (!activeHighlight) fetchCategoryNews();
   }, [fetchCategoryNews, activeHighlight]);
 
-  /** Infinite Scroll */
+  /** Infinite scroll */
   useEffect(() => {
     const handleScroll = () => {
       if (
@@ -163,8 +157,8 @@ const News: React.FC<NewsProps> = ({ category, articles, setArticles }) => {
             <NewsCard key={index} article={article} />
           ))}
 
-        {/* Loading more (category only) */}
-        {loadingMore && !activeHighlight && (
+        {/* Loading more */}
+        {!activeHighlight && loadingMore && (
           <div className="col-span-full text-center text-gray-400 py-6">
             Loading more news...
           </div>
